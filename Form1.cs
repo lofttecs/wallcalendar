@@ -16,6 +16,7 @@ namespace wallpaper_calendar
         Point mousePoint;
         DateTime dtm_today = DateTime.Today;
         Label[] lbl_arr;
+        
 
         public Form1()
         {
@@ -96,14 +97,18 @@ namespace wallpaper_calendar
                 lbl_arr[i].Font = new Font("Meirio", 10, GraphicsUnit.Pixel);
                 lbl_arr[i].Padding = new Padding(0);
                 lbl_arr[i].Margin = new Padding(0);
-                if (int_col == 0 || GenCalendar.HolidayChecker.Holiday(dtm_tgt).holiday != 0 )
-                {
-                    lbl_arr[i].ForeColor = Color.FromArgb(0, 204, 51, 51);
-                }
                 if (int_col == 6)
                 {
                     lbl_arr[i].ForeColor = Color.FromArgb(0, 51, 51, 204);
                     int_row++;
+                }
+                if (int_col == 0 || GenCalendar.HolidayChecker.Holiday(dtm_tgt).holiday != 0)
+                {
+                    lbl_arr[i].ForeColor = Color.FromArgb(0, 204, 51, 51);
+                }
+                if (GenCalendar.HolidayChecker.Holiday(dtm_tgt).holiday != 0)
+                {
+                    toolTip1.SetToolTip(lbl_arr[i], GenCalendar.HolidayChecker.Holiday(dtm_tgt).name);
                 }
                 
             }
@@ -129,5 +134,6 @@ namespace wallpaper_calendar
             Form2 frm_2 = new Form2();
             frm_2.Show();
         }
+
     }
 }

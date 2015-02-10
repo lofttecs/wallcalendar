@@ -36,6 +36,7 @@
             this.終了ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.wallpaperCalendarについてToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,7 @@
             this.toolStripSeparator1,
             this.wallpaperCalendarについてToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(234, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(234, 76);
             // 
             // 最前面に表示ToolStripMenuItem
             // 
@@ -114,6 +115,7 @@
         private System.Windows.Forms.ToolStripMenuItem 終了ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem wallpaperCalendarについてToolStripMenuItem;
+        private System.Windows.Forms.ToolTip toolTip1;
 
     }
 }
