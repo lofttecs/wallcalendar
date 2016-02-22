@@ -14,22 +14,23 @@ namespace wallpaper_calendar
     public partial class Form1 : Form
     {
         Point mousePoint;
-        DateTime dtm_today = DateTime.Today;
+        DateTime dtm_today;
         Label[] lbl_arr;
-        
+        user_config user_config;
 
         public Form1()
         {
             InitializeComponent();
 
-            this.Left = Properties.Settings.Default.form_x;
-            this.Top = Properties.Settings.Default.form_y;
-            this.TopMost = Properties.Settings.Default.form_topmost;
-            最前面に表示ToolStripMenuItem.Checked = this.TopMost;
+            user_config = new user_config();
+            dtm_today = DateTime.Today;
+            this.Left = user_config.position_left;
+            this.Top = user_config.position_top;
+            this.TopMost = user_config.topmost > 0;
+            ToolStripMenuItem2.Checked = this.TopMost;
 
             show_calendar(dtm_today);
         }
-
 
         private void Form1_MouseDown(object sender,System.Windows.Forms.MouseEventArgs e)
         {
@@ -44,14 +45,7 @@ namespace wallpaper_calendar
             {
                 this.Left += e.X - mousePoint.X;
                 this.Top += e.Y - mousePoint.Y;
-                Properties.Settings.Default.form_x = this.Left;
-                Properties.Settings.Default.form_y = this.Top;
             }
-        }
-
-        private void Form1_Closing(object sender, FormClosedEventArgs e)
-        {
-            Properties.Settings.Default.Save();
         }
 
         private void show_calendar(DateTime dtm_tgt)
@@ -65,21 +59,22 @@ namespace wallpaper_calendar
             int int_h = 17;
             int int_day;
 
-            lbl_arr = new Label[int_dim+1];
+            lbl_arr = new Label[int_dim + 1];
             lbl_arr[0] = new Label();
             lbl_arr[0].Text = dtm_tgt.Year.ToString() + "年" + dtm_tgt.Month.ToString() + "月";
             lbl_arr[0].BackColor = Color.FromArgb(0, 0, 0, 0);
-            lbl_arr[0].Width = 110;
-            lbl_arr[0].Height = 20;
-            lbl_arr[0].Left = 5;
+            lbl_arr[0].Width = this.Width;
+            lbl_arr[0].Left = 0;
             lbl_arr[0].Top = 0;
             lbl_arr[0].TextAlign = ContentAlignment.MiddleCenter;
-            lbl_arr[0].Font = new Font("Meirio", 12, GraphicsUnit.Pixel);
-            lbl_arr[0].Padding = new Padding(0);
+            lbl_arr[0].Font = new Font(user_config.fontname_month, user_config.fontsize_month, user_config.fontstyle_month_enum());
+            lbl_arr[0].Padding = new Padding(0,0,0,5);
             lbl_arr[0].Margin = new Padding(0);
             lbl_arr[0].ForeColor = Color.FromArgb(0, 51, 51, 51);
+            lbl_arr[0].AutoSize = true;
+            lbl_arr[0].Anchor = (AnchorStyles.Top|AnchorStyles.Left|AnchorStyles.Right);
 
-
+            Font font_day = new Font(user_config.fontname_day, user_config.fontsize_day, user_config.fontstyle_day_enum()); 
             for (int i = 1; i <= int_dim; i++)
             {
                 int_day = i;
@@ -89,14 +84,12 @@ namespace wallpaper_calendar
                 lbl_arr[i] = new Label();
                 lbl_arr[i].Text = int_day.ToString();
                 lbl_arr[i].BackColor = Color.FromArgb(0, 0, 0, 0);
-                lbl_arr[i].Width = int_w +3;
-                lbl_arr[i].Height = int_h;
-                lbl_arr[i].Left = int_col * int_w;
-                lbl_arr[i].Top = lbl_arr[0].Height + int_row * int_h;
-                lbl_arr[i].TextAlign = ContentAlignment.MiddleCenter;
-                lbl_arr[i].Font = new Font("Meirio", 10, GraphicsUnit.Pixel);
+                lbl_arr[i].AutoSize = true;
                 lbl_arr[i].Padding = new Padding(0);
                 lbl_arr[i].Margin = new Padding(0);
+                lbl_arr[i].Font = font_day;
+                lbl_arr[i].TextAlign = ContentAlignment.MiddleCenter;
+
                 if (int_col == 6)
                 {
                     lbl_arr[i].ForeColor = Color.FromArgb(0, 51, 51, 204);
@@ -110,30 +103,91 @@ namespace wallpaper_calendar
                 {
                     toolTip1.SetToolTip(lbl_arr[i], GenCalendar.HolidayChecker.Holiday(dtm_tgt).name);
                 }
+                if (dtm_today == dtm_tgt)
+                {
+                    lbl_arr[i].BackColor = Color.DarkGray;
+                }
                 
             }
             this.Controls.AddRange(lbl_arr);
+
+            lbl_arr[0].AutoSize = false;
+            lbl_arr[0].Width = this.Width;
+            lbl_arr[0].MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+            lbl_arr[0].MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            lbl_arr[0].MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
+
+            if (lbl_arr[int_dim].Width > int_w || lbl_arr[int_dim].Height > int_h)
+            {
+                int_w = lbl_arr[int_dim].Width;
+                int_h = lbl_arr[int_dim].Height;
+            }
+            int_row = 0;
+            for (int i = 1; i <= int_dim; i++)
+            {
+                int_day = i;
+                dtm_tgt = new DateTime(dtm_tgt.Year, dtm_tgt.Month, int_day);
+                int_col = (int)dtm_tgt.DayOfWeek;
+                lbl_arr[i].Left = int_col * int_w;
+                lbl_arr[i].Top = lbl_arr[0].Height + int_row * int_h;
+                lbl_arr[i].AutoSize = false;
+                lbl_arr[i].Width = int_w;
+                lbl_arr[i].Height = int_h;
+                if (int_col == 6)
+                {
+                    int_row++;
+                }
+            }
+            this.Width = int_w * 7;
+            this.Height = lbl_arr[0].Height + lbl_arr[int_dim].Top + int_h / 2;
         }
 
-        private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             notifyIcon1.Visible = false;
             Application.Exit();
         }
 
-        private void 最前面に表示ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             this.TopMost = !this.TopMost;
-            最前面に表示ToolStripMenuItem.Checked = this.TopMost;
-            Properties.Settings.Default.form_topmost = this.TopMost;
+            ToolStripMenuItem2.Checked = this.TopMost;
+            user_config.reg_topmost(this.TopMost ? 1 : 0);
         }
 
-        private void wallpaperCalendarについてToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            //this.AddOwnedForm(Form2);
             Form2 frm_2 = new Form2();
             frm_2.Show();
         }
 
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form3 frm_3 = new Form3();
+            frm_3.FormClosed += new FormClosedEventHandler(Form3_FormClosed);
+            frm_3.Show(this);
+        }
+        private void Form3_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            user_config = new user_config();
+            this.Controls.Clear();
+            this.Left = user_config.position_left;
+            this.Top = user_config.position_top;
+            this.TopMost = user_config.topmost > 0;
+            ToolStripMenuItem2.Checked = this.TopMost;
+
+            show_calendar(dtm_today);
+        }
+
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            user_config.reg_position_top(this.Top);
+            user_config.reg_position_left(this.Left);
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            this.Activate();
+        }
     }
 }

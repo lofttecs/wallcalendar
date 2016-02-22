@@ -14,6 +14,15 @@ namespace wallpaper_calendar
         public Form2()
         {
             InitializeComponent();
+            string ver = Application.ProductVersion;
+            label3.Text = "version " + ver;
+            //AssemblyCopyrightの取得
+            System.Reflection.AssemblyCopyrightAttribute asmcpy =
+                (System.Reflection.AssemblyCopyrightAttribute)
+                Attribute.GetCustomAttribute(
+                System.Reflection.Assembly.GetExecutingAssembly(),
+                typeof(System.Reflection.AssemblyCopyrightAttribute));
+            label2.Text = asmcpy.Copyright + " All Rights Reserved.";
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
