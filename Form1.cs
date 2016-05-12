@@ -50,6 +50,8 @@ namespace wallpaper_calendar
 
         private void show_calendar(DateTime dtm_tgt)
         {
+            this.BackColor = Color.FromArgb(255, user_config.colorint_background[1], user_config.colorint_background[2], user_config.colorint_background[3]);
+            this.Opacity = user_config.opacityint_form1;
             dtm_tgt = new DateTime(dtm_tgt.Year, dtm_tgt.Month, 1);
 
             int int_dim = DateTime.DaysInMonth(dtm_tgt.Year, dtm_tgt.Month);
@@ -62,15 +64,15 @@ namespace wallpaper_calendar
             lbl_arr = new Label[int_dim + 1];
             lbl_arr[0] = new Label();
             lbl_arr[0].Text = dtm_tgt.Year.ToString() + "年" + dtm_tgt.Month.ToString() + "月";
-            lbl_arr[0].BackColor = Color.FromArgb(0, 0, 0, 0);
+            lbl_arr[0].BackColor = Color.FromArgb(0, 255, 255, 255);
             lbl_arr[0].Width = this.Width;
             lbl_arr[0].Left = 0;
             lbl_arr[0].Top = 0;
             lbl_arr[0].TextAlign = ContentAlignment.MiddleCenter;
             lbl_arr[0].Font = new Font(user_config.fontname_month, user_config.fontsize_month, user_config.fontstyle_month_enum());
-            lbl_arr[0].Padding = new Padding(0,0,0,5);
+            lbl_arr[0].Padding = new Padding(0, 0, 0, 5);
             lbl_arr[0].Margin = new Padding(0);
-            lbl_arr[0].ForeColor = Color.FromArgb(0, 51, 51, 51);
+            lbl_arr[0].ForeColor = Color.FromArgb(user_config.colorint_month[0], user_config.colorint_month[1], user_config.colorint_month[2], user_config.colorint_month[3]);
             lbl_arr[0].AutoSize = true;
             lbl_arr[0].Anchor = (AnchorStyles.Top|AnchorStyles.Left|AnchorStyles.Right);
 
@@ -83,21 +85,22 @@ namespace wallpaper_calendar
 
                 lbl_arr[i] = new Label();
                 lbl_arr[i].Text = int_day.ToString();
-                lbl_arr[i].BackColor = Color.FromArgb(0, 0, 0, 0);
+                lbl_arr[i].BackColor = Color.FromArgb(0, 255, 255, 255);
                 lbl_arr[i].AutoSize = true;
                 lbl_arr[i].Padding = new Padding(0);
                 lbl_arr[i].Margin = new Padding(0);
                 lbl_arr[i].Font = font_day;
                 lbl_arr[i].TextAlign = ContentAlignment.MiddleCenter;
+                lbl_arr[i].ForeColor = Color.FromArgb(user_config.colorint_weekday[0], user_config.colorint_weekday[1], user_config.colorint_weekday[2], user_config.colorint_weekday[3]);
 
                 if (int_col == 6)
                 {
-                    lbl_arr[i].ForeColor = Color.FromArgb(0, 51, 51, 204);
+                    lbl_arr[i].ForeColor = Color.FromArgb(user_config.colorint_saturday[0], user_config.colorint_saturday[1], user_config.colorint_saturday[2], user_config.colorint_saturday[3]);
                     int_row++;
                 }
                 if (int_col == 0 || GenCalendar.HolidayChecker.Holiday(dtm_tgt).holiday != 0)
                 {
-                    lbl_arr[i].ForeColor = Color.FromArgb(0, 204, 51, 51);
+                    lbl_arr[i].ForeColor = Color.FromArgb(user_config.colorint_holiday[0], user_config.colorint_holiday[1], user_config.colorint_holiday[2], user_config.colorint_holiday[3]);
                 }
                 if (GenCalendar.HolidayChecker.Holiday(dtm_tgt).holiday != 0)
                 {
@@ -105,7 +108,7 @@ namespace wallpaper_calendar
                 }
                 if (dtm_today == dtm_tgt)
                 {
-                    lbl_arr[i].BackColor = Color.DarkGray;
+                    lbl_arr[i].BackColor = Color.FromArgb(user_config.colorint_today[0], user_config.colorint_today[1], user_config.colorint_today[2], user_config.colorint_today[3]);
                 }
                 
             }
