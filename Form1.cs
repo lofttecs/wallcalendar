@@ -54,7 +54,9 @@ namespace wallpaper_calendar
 
         private void show_calendar(DateTime dtm_tgt)
         {
-            this.Hide();
+            Hide();
+
+            dtm_today = DateTime.Today;
 
             this.BackColor = Color.FromArgb(255, user_config.colorint_background[1], user_config.colorint_background[2], user_config.colorint_background[3]);
             this.Opacity = user_config.opacityint_form1;
