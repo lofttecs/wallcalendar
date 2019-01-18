@@ -1,6 +1,6 @@
 # wallpaper_calendar
 
-Copyright (C) 2016 Loft Co., Ltd. All Rights Reserved.  
-version 1.4  
+Copyright (C) 2018 Loft Co., Ltd. All Rights Reserved.  
+version 1.5  
 
 <http://web.loft-net.co.jp/lofttecs/>
