@@ -1,170 +1,389 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.IO;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
-namespace wallpaper_calendar
+namespace wallcalendar
 {
     public partial class Form3 : Form
     {
-        user_config user_config = new user_config();
+        Settings settings = new Settings();
+
+        String[] string_fontfamily;
+        List<ComboBox2ItemSet> comboBox2Items = new List<ComboBox2ItemSet>();
+
+        public String ComboBox1
+        {
+            get
+            {
+                return (comboBox1.SelectedItem ?? "").ToString();
+            }
+            set
+            {
+                comboBox1.SelectedIndex = Array.IndexOf(string_fontfamily, value);
+            }
+        }
+        public int NumericUpDown1
+        {
+            get
+            {
+                return (int)numericUpDown1.Value;
+            }
+            set
+            {
+                numericUpDown1.Value = value;
+            }
+        }
+        public int NumericUpDown2
+        {
+            get
+            {
+                return (int)numericUpDown2.Value;
+            }
+            set
+            {
+                numericUpDown2.Value = value;
+            }
+        }
+        public int NumericUpDown3
+        {
+            get
+            {
+                return (int)numericUpDown3.Value;
+            }
+            set
+            {
+                numericUpDown3.Value = (int)value;
+            }
+        }
+        public int NumericUpDown4
+        {
+            get
+            {
+                return (int)numericUpDown4.Value;
+            }
+            set
+            {
+                numericUpDown4.Value = value;
+            }
+        }
+        public int NumericUpDown5
+        {
+            get
+            {
+                return (int)numericUpDown5.Value;
+            }
+            set
+            {
+                numericUpDown5.Value = value;
+            }
+        }
+        public string Button3
+        {
+            get
+            {
+                return button3.BackColor.A.ToString("X2") + button3.BackColor.R.ToString("X2") + button3.BackColor.G.ToString("X2") + button3.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button3.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public string Button4
+        {
+            get
+            {
+                return button4.BackColor.A.ToString("X2") + button4.BackColor.R.ToString("X2") + button4.BackColor.G.ToString("X2") + button4.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button4.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public string Button5
+        {
+            get
+            {
+                return button5.BackColor.A.ToString("X2") + button5.BackColor.R.ToString("X2") + button5.BackColor.G.ToString("X2") + button5.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button5.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public string Button6
+        {
+            get
+            {
+                return button6.BackColor.A.ToString("X2") + button6.BackColor.R.ToString("X2") + button6.BackColor.G.ToString("X2") + button6.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button6.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public string Button7
+        {
+            get
+            {
+                return button7.BackColor.A.ToString("X2") + button7.BackColor.R.ToString("X2") + button7.BackColor.G.ToString("X2") + button7.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button7.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public string Button8
+        {
+            get
+            {
+                return button8.BackColor.A.ToString("X2") + button8.BackColor.R.ToString("X2") + button8.BackColor.G.ToString("X2") + button8.BackColor.B.ToString("X2");
+            }
+            set
+            {
+                button8.BackColor = Color.FromArgb(Convert.ToInt32(value, 16));
+            }
+        }
+        public Boolean CheckBox1
+        {
+            get
+            {
+                return checkBox1.Checked;
+            }
+            set
+            {
+                checkBox1.Checked = value;
+            }
+        }
+        public Boolean CheckBox2
+        {
+            get
+            {
+                return checkBox2.Checked;
+            }
+            set
+            {
+                checkBox2.Checked = value;
+            }
+        }
+        public Boolean CheckBox3
+        {
+            get
+            {
+                return checkBox3.Checked;
+            }
+            set
+            {
+                checkBox3.Checked = value;
+            }
+        }
+        public Boolean CheckBox4
+        {
+            get
+            {
+                return checkBox4.Checked;
+            }
+            set
+            {
+                checkBox4.Checked = value;
+            }
+        }
+        public Boolean CheckBox5
+        {
+            get
+            {
+                return checkBox5.Checked;
+            }
+            set
+            {
+                checkBox5.Checked = value;
+            }
+        }
+        public Boolean CheckBox6
+        {
+            get
+            {
+                return checkBox6.Checked;
+            }
+            set
+            {
+                checkBox6.Checked = value;
+            }
+        }
+
+        public String ComboBox2
+        {
+            get
+            {
+                return comboBox2.SelectedValue.ToString();
+            }
+            set
+            {
+                comboBox2.SelectedValue = (ComboBox2ItemSetItemValueContains(comboBox2Items, value)) ? value : "ja-JP";
+            }
+        }
+        public class ComboBox2ItemSet
+        {
+            public String ItemKey { get; set; }
+            public String ItemValue { get; set; }
+            public ComboBox2ItemSet(String key, String val)
+            {
+                ItemKey = key;
+                ItemValue = val;
+            }
+        }
+        public bool ComboBox2ItemSetItemValueContains(List<ComboBox2ItemSet> items, string itemvalue)
+        {
+            foreach (ComboBox2ItemSet item in items)
+            {
+                if (item.ItemValue == itemvalue) { return true; }
+            }
+            return false;
+        }
+        public Boolean radioButton_1_2
+        {
+            get
+            {
+                return radioButton2.Checked;
+            }
+            set
+            {
+                radioButton1.Checked = !value;
+                radioButton2.Checked = value;
+            }
+        }
 
         public Form3()
         {
             InitializeComponent();
 
-            textBox1_text();
-            textBox2_text();
-            numericUpDown1.Value = user_config.position_left;
-            numericUpDown2.Value = user_config.position_top;
-            checkBox1.Checked = user_config.topmost > 0;
-            button5.BackColor = Color.FromArgb(255, user_config.colorint_background[1], user_config.colorint_background[2], user_config.colorint_background[3]);
-            button6.BackColor = Color.FromArgb(255, user_config.colorint_today[1], user_config.colorint_today[2], user_config.colorint_today[3]);
-            button7.BackColor = Color.FromArgb(255, user_config.colorint_weekday[1], user_config.colorint_weekday[2], user_config.colorint_weekday[3]);
-            button8.BackColor = Color.FromArgb(255, user_config.colorint_holiday[1], user_config.colorint_holiday[2], user_config.colorint_holiday[3]);
-            button9.BackColor = Color.FromArgb(255, user_config.colorint_saturday[1], user_config.colorint_saturday[2], user_config.colorint_saturday[3]);
-            button10.BackColor = Color.FromArgb(255, user_config.colorint_month[1], user_config.colorint_month[2], user_config.colorint_month[3]);
-            numericUpDown3.Value = (int)(user_config.opacityint_form1 * 100);
-            colorDialog1.FullOpen = true;
-            colorDialog1.AnyColor = true;
+            string_fontfamily = new String[0];
+
+            foreach (FontFamily item in FontFamily.Families)
+            {
+                if (item.IsStyleAvailable(FontStyle.Regular))
+                {
+                    comboBox1.Items.Add(item.Name);
+
+                    Array.Resize(ref string_fontfamily, string_fontfamily.Length + 1);
+                    string_fontfamily[string_fontfamily.Length - 1] = item.Name;
+                    Application.DoEvents();
+                }
+                item.Dispose();
+            }
+            comboBox1.MaxDropDownItems = 15;
+            //comboBox1.DropDownHeight = comboBox1.MaxDropDownItems * (int)comboBox1.Font.Size;
+            //comboBox1.DropDownHeight = 180;
+
+            comboBox2Items.Add(new ComboBox2ItemSet("日本語", "ja-JP"));
+            comboBox2Items.Add(new ComboBox2ItemSet("English", "en-GB"));
+            comboBox2Items.Add(new ComboBox2ItemSet("French", "fr-FR"));
+            comboBox2Items.Add(new ComboBox2ItemSet("German", "de-DE"));
+            comboBox2Items.Add(new ComboBox2ItemSet("Italian", "it-IT"));
+
+            foreach (ComboBox2ItemSet item in comboBox2Items)
+            {
+                comboBox2.Items.Add(item.ItemKey);
+            }
+            comboBox2.DataSource = comboBox2Items;
+            comboBox2.DisplayMember = "ItemKey";
+            comboBox2.ValueMember = "ItemValue";
         }
 
-        private void textBox1_text()
+        private void ComboBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            textBox1.Text = user_config.fontname_month + ", " + user_config.fontsize_month;
-            textBox1.BackColor = Color.White;
-            textBox1.ForeColor = Color.Black;
-        }
-        private void textBox2_text()
-        {
-            textBox2.Text = user_config.fontname_day + ", " + user_config.fontsize_day;
-            textBox2.BackColor = Color.White;
-            textBox2.ForeColor = Color.Black;
-        }
+            if (e.Index == -1) return;
+            //背景を描画する
+            //項目が選択されている時は強調表示される
+            e.DrawBackground();
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            fontDialog1.Font = new Font(user_config.fontname_month, user_config.fontsize_month, user_config.fontstyle_month_enum());
+            ComboBox cmb = (ComboBox)sender;
+            //項目に表示する文字列
+            string txt = e.Index > -1 ? cmb.Items[e.Index].ToString() : cmb.Text;
+
             try
             {
-                if (fontDialog1.ShowDialog() != DialogResult.Cancel)
-                {
-                    user_config.fontname_month = fontDialog1.Font.FontFamily.Name;
-                    user_config.fontstyle_month = fontDialog1.Font.Style.ToString();
-                    user_config.fontsize_month = (int)Math.Round(fontDialog1.Font.Size);
-                }
-                textBox1_text();
+                FontFamily fontFamily = new FontFamily(txt);
+                //Console.WriteLine(fontFamily.IsStyleAvailable(FontStyle.Italic).ToString());
+                //使用するフォント
+                //Font f = new Font(txt, cmb.Font.Size);
+                Font f = new Font(txt, cmb.Font.Size, GraphicsUnit.Pixel);
+                if (fontFamily.IsStyleAvailable(FontStyle.Regular))
+                    f = new Font(txt, cmb.Font.Size, FontStyle.Regular, GraphicsUnit.Pixel);
+                fontFamily.Dispose();
+                //使用するブラシ
+                Brush b = new SolidBrush(e.ForeColor);
+                //文字列を描画する
+                Font ff = new Font(cmb.Font.FontFamily, 9);
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                float ym = (e.Bounds.Height - e.Graphics.MeasureString(txt, ff).Height) / 2;
+                e.Graphics.DrawString(txt, ff, b, e.Bounds.X, e.Bounds.Y + ym);
+
+                System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo(ComboBox2);
+
+                e.Graphics.DrawString(DateTime.Today.ToString("MMMM yyyy", cultureInfo), f, b, e.Graphics.MeasureString(txt, ff).Width + 10, e.Bounds.Y + ym);
+                //Console.WriteLine(e.Bounds.ToString());
+
+                f.Dispose();
+                ff.Dispose();
+                b.Dispose();
+
+                //フォーカスを示す四角形を描画
+                e.DrawFocusRectangle();
+                e.Graphics.Dispose();
+
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("True Typeフォントのみ使用できます。");
+                cmb.DrawMode = DrawMode.Normal;
+                //MessageBox.Show("フォントの描画の際にエラーが発生しました。\nテキスト表示に切り替えます。");
+                //MessageBox.Show(ex.ToString());
             }
+            //e.Graphics.DrawString(comboBox1.Items[e.Index].ToString(),
+            //                      new Font(comboBox1.Items[e.Index].ToString(), 10),
+            //                      new SolidBrush(Color.Black),
+            //                      e.Bounds.X,
+            //                      e.Bounds.Y);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
-            fontDialog1.Font = new Font(user_config.fontname_day, user_config.fontsize_day, user_config.fontstyle_day_enum());
-            try
-            {
-                if (fontDialog1.ShowDialog() != DialogResult.Cancel)
-                {
-                    user_config.fontname_day = fontDialog1.Font.FontFamily.Name;
-                    user_config.fontstyle_day = fontDialog1.Font.Style.ToString();
-                    user_config.fontsize_day = (int)Math.Round(fontDialog1.Font.Size);
-                }
-                textBox2_text();
-            }
-            catch
-            {
-                MessageBox.Show("True Typeフォントのみ使用できます。");
-            }
+            Close();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Color_Button_Click(object sender, EventArgs e)
         {
-            user_config.position_top = (int)numericUpDown2.Value;
-            user_config.position_left = (int)numericUpDown1.Value;
-            user_config.topmost = checkBox1.Checked ? 1 : 0;
-            user_config.colorint_background = new int[] { button5.BackColor.A, button5.BackColor.R, button5.BackColor.G, button5.BackColor.B };
-            user_config.colorint_today = new int[] { button6.BackColor.A, button6.BackColor.R, button6.BackColor.G, button6.BackColor.B };
-            user_config.colorint_weekday = new int[] { button7.BackColor.A, button7.BackColor.R, button7.BackColor.G, button7.BackColor.B };
-            user_config.colorint_holiday = new int[] { button8.BackColor.A, button8.BackColor.R, button8.BackColor.G, button8.BackColor.B };
-            user_config.colorint_saturday = new int[] { button9.BackColor.A, button9.BackColor.R, button9.BackColor.G, button9.BackColor.B };
-            user_config.colorint_month = new int[] { button10.BackColor.A, button10.BackColor.R, button10.BackColor.G, button10.BackColor.B };
-            user_config.opacityint_form1 = (double)(numericUpDown3.Value / 100);
-            user_config.reg_all();
-            this.Close();
-        }
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            colorDialog1.Color = button5.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button5.BackColor.R, button5.BackColor.G, button5.BackColor.B };
+            colorDialog1.Color = ((Button)sender).BackColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                button5.BackColor = colorDialog1.Color;
+                ((Button)sender).BackColor = colorDialog1.Color;
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void CheckBox6_CheckedChanged(object sender, EventArgs e)
         {
-            colorDialog1.Color = button6.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button6.BackColor.R, button6.BackColor.G, button6.BackColor.B };
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                button6.BackColor = colorDialog1.Color;
-            }
+            button3.Enabled = !((CheckBox)sender).Checked;
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void CheckBox7_CheckedChanged(object sender, EventArgs e)
         {
-            colorDialog1.Color = button7.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button7.BackColor.R, button7.BackColor.G, button7.BackColor.B };
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                button7.BackColor = colorDialog1.Color;
-            }
+            button4.Enabled = !((CheckBox)sender).Checked;
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void ComboBox1_TextChanged(object sender, EventArgs e)
         {
-            colorDialog1.Color = button8.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button8.BackColor.R, button8.BackColor.G, button8.BackColor.B };
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                button8.BackColor = colorDialog1.Color;
-            }
+            FontFamily fontFamily = new FontFamily(((ComboBox)sender).Text);
+            checkBox1.Enabled = fontFamily.IsStyleAvailable(FontStyle.Bold);
+            checkBox2.Enabled = fontFamily.IsStyleAvailable(FontStyle.Italic);
+            checkBox3.Enabled = fontFamily.IsStyleAvailable(FontStyle.Underline);
+            fontFamily.Dispose();
         }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            colorDialog1.Color = button9.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button9.BackColor.R, button9.BackColor.G, button9.BackColor.B };
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                button9.BackColor = colorDialog1.Color;
-            }
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            colorDialog1.Color = button10.BackColor;
-            colorDialog1.CustomColors = new int[] { 255, button10.BackColor.R, button10.BackColor.G, button10.BackColor.B };
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                button10.BackColor = colorDialog1.Color;
-            }
-        }
-
     }
 }
